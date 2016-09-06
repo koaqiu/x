@@ -1,0 +1,8 @@
+#--
+
+node_modules
+.git-credentials
+.DS_Store
+.vscode
+.idea
+server/vendor
