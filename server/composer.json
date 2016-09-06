@@ -1,0 +1,7 @@
+{
+    "require": {
+        "matthiasmullie/scrapbook": "^1.2",
+        "league/flysystem": "^1.0",
+        "smarty/smarty": "^3.1"
+    }
+}
