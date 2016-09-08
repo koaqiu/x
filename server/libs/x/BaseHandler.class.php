@@ -9,11 +9,28 @@
 namespace x;
 
 
+/**
+ * 客户端请求的处理程序基类
+ * @package x
+ */
 class BaseHandler
 {
+    /**
+     * GET请求
+     */
     const METHOD_GET = 1;
+    /**
+     * POS请求
+     */
     const METHOD_POST = 2;
 
+    /**
+     * 从客户端传第来的数据中读取有效数据
+     * @param string $key           值名称
+     * @param null|mixed $dv        默认值
+     * @param int $method           请求类型
+     * @return null|mixed
+     */
     protected function get($key, $dv = null, $method = self::METHOD_GET)
     {
         switch ($method) {
@@ -33,7 +50,7 @@ class BaseHandler
 
     /**
      * 读取原始POST数据
-     * @return bool|mixed
+     * @return false|string
      */
     protected function getContent(){
 //        if(isset($GLOBALS['HTTP_RAW_POST_DATA']))
@@ -49,9 +66,9 @@ class BaseHandler
     /**
      * 传入一组key，按顺序读取参数，直到有有效值为止，如果都没有返回dv
      * @param array $keys
-     * @param null $dv
+     * @param null|mixed $dv
      * @param int $method
-     * @return bool|null
+     * @return false|null|mixed
      */
     protected function getOne(array $keys, $dv = null, $method = self::METHOD_GET)
     {
@@ -80,6 +97,7 @@ class BaseHandler
 
     /**
      * 判断是否Ajax请求
+     * @return bool
      */
     protected function isAjaxRequest()
     {
