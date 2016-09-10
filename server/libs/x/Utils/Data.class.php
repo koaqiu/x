@@ -39,8 +39,48 @@ class Data
             : $dv;
     }
 
-    function __get($name)
-    {
-        return $this->get($name);
+    /**
+     * 读取整型
+     * @param $key
+     * @param int $dv
+     * @return int
+     */
+    public function getInt($key, $dv = 0){
+        if($this->exists($key)){
+            $v = $this->_data[$key];
+            if(is_numeric($v)){
+                return intval($v);
+            }
+        }
+        return $dv;
+    }
+
+    /**
+     * 读取浮点型
+     * @param $key
+     * @param float $dv
+     * @return float
+     */
+    public function getFloat($key, $dv = 0.0){
+        if($this->exists($key)){
+            $v = $this->_data[$key];
+            if(is_numeric($v)){
+                return floatval($v);
+            }
+        }
+        return $dv;
+    }
+    /**
+     * 读取日期类型
+     * @param $key
+     * @param null|DateTime $dv
+     * @return null|DateTime
+     */
+    public function getDate($key, $dv = null){
+        if($this->exists($key)){
+            $v = $this->_data[$key];
+            return new DateTime($v);
+        }
+        return $dv;
     }
 }

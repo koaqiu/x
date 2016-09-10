@@ -20,7 +20,7 @@ class Core
         }
         return false;
     }
-    public function getip() {
+    public static function getip() {
         $unknown = 'unknown';
         $ip = "";
         if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] && strcasecmp($_SERVER['HTTP_X_FORWARDED_FOR'], $unknown)){
