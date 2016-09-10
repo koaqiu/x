@@ -238,11 +238,13 @@ class SqlBuilder
                         $str .= " $operator (".$result.")";
                     continue;
                 }
-                if(is_subclass_of($item,"x\\Db\\Operates\\WhereOperate")) {
-                    $field = $this->fixField($key);
-                    $str .= " $operator `$field` " . $item->build();
-                }elseif ($item instanceof WhereItem){
-                    $str .= " $operator ". $item->build();
+                if(is_object($item)){
+                    if(is_subclass_of($item,"x\\Db\\Operates\\WhereOperate")) {
+                        $field = $this->fixField($key);
+                        $str .= " $operator `$field` " . $item->build();
+                    }elseif ($item instanceof WhereItem){
+                        $str .= " $operator ". $item->build();
+                    }
                 }else{
                     $field = $this->fixField($key);
                     $str .= " $operator `$field` = ". WhereOperate::fixValue($item);
