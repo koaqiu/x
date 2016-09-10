@@ -22,13 +22,14 @@ function file_exists_case($filename) {
  * Class CLoader
  */
 class CLoader{
-    const CACHE_PATH = APP_TEMP_PATH."class_cache.php";
+    private static $CACHE_PATH = '';
     protected static $_cache = null;
 
     /**
      * 注册加载器
      */
     public static function init(){
+        self::$CACHE_PATH = APP_TEMP_PATH."class_cache.php";
         if(false === spl_autoload_functions()){
             if(function_exists('__autoload')){
                 spl_autoload_registe('__autoload',false);
@@ -88,7 +89,7 @@ class CLoader{
     }
     protected static function getCache(){
         if(self::$_cache)return self::$_cache;
-        if(file_exists_case(self::CACHE_PATH)){
+        if(file_exists_case(self::$CACHE_PATH)){
             self::$_cache = include APP_TEMP_PATH."class_cache.php";
         }else{
             self::$_cache = array();
@@ -96,7 +97,7 @@ class CLoader{
         return self::$_cache;
     }
     protected static function saveCache(array $config){
-        file_put_contents(self::CACHE_PATH, "<?php \r return ".var_export($config, true).";");
+        file_put_contents(self::$CACHE_PATH, "<?php \r return ".var_export($config, true).";");
     }
 
     /**
