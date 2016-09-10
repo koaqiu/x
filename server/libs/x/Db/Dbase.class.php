@@ -103,7 +103,7 @@ class Dbase
         $q = $this->_db->query($sql);
         if(!$q)return false;
         try {
-            if($q->fetch_all) {
+            if(method_exists($q,'fetch_all')){
                 $result = $q->fetch_all(MYSQLI_ASSOC);
             }else{
                 while ($row = $q->fetch_assoc()) {
