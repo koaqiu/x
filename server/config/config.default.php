@@ -37,4 +37,5 @@ return array(
     "api"=>array(
         "secure"=>"TOKEN",//安全性：使用 token（默认），false 不进行验证
     ),
+	"ShowDocs"=>true,
 );
