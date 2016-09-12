@@ -33,9 +33,10 @@ class BaseController extends BaseHandler
 //      $this->_smarty->setConfigDir(APP_TEMP_PATH.'app'.DIRECTORY_SEPARATOR.'configs'.DIRECTORY_SEPARATOR);
         $this->_smarty->setCacheDir($config["cache"]);
         $this->action = $routePath[0];
-
+	    $this->pageInit();
         $this->$routePath[0]();
     }
+    protected function pageInit(){}
     protected function assign($tpl_var, $value = null, $nocache = false){
         $this->_smarty->assign($tpl_var, $value, $nocache);
     }

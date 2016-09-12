@@ -12,13 +12,23 @@ namespace x\Core;
 use x\Api\BaseApi;
 use x\Utils\Cache;
 
+/**
+ * 获取访问TOKEN
+ * @package x\Core
+ */
 class GetToken extends BaseApi
 {
+
     function getAction()
     {
         return "Core.GetToken";
     }
-
+	function getRequestType(){
+		return "x\\Core\\GetTokenRequest";
+	}
+	function getResultType() {
+		return "x\\Core\\GetTokenResult";
+	}
     function execute()
     {
         $data = $this->getInputParams();
@@ -42,4 +52,40 @@ class GetToken extends BaseApi
 
         ));
     }
+}
+
+/**
+ * Class GetTokenRequest
+ * @package x\Core
+ */
+class GetTokenRequest{
+	/**
+	 * appid
+	 * @var string
+	 */
+	public $id;
+
+	/**
+	 * app密钥
+	 * @var string
+	 */
+	public $secret;
+}
+
+/**
+ * Class GetTokenResult
+ * @package x\Core
+ */
+class GetTokenResult{
+	/**
+	 * Token
+	 * @var string
+	 */
+	public $token;
+
+	/**
+	 * 超时时间（秒）
+	 * @var int 1800
+	 */
+	public $timeout;
 }

@@ -68,6 +68,7 @@ class Handler extends BaseHandler
 
     public static function Register(BaseApi $api)
     {
+    	self::cacheDocs($api);
         try {
             self::$_inc->out($api->execute());
         } catch (\Exception $err) {
@@ -76,7 +77,43 @@ class Handler extends BaseHandler
             self::$_inc->error($err->getMessage(), $err->getCode());
         }
     }
-
+	private static function cacheDocs($api){
+		$cachePath = APP_TEMP_PATH."api_cache.php";
+		if(file_exists_case($cachePath)){
+			$apiList = include $cachePath;
+		}else{
+			$apiList = array();
+		}
+		$r = new \ReflectionClass($api);
+		if(array_key_exists($r->getName(), $apiList))return;
+		$doc =  self::handlerComment($r->getDocComment());
+		$data['name'] = str_replace("x.","",str_replace("\\",".",$r->getName()));
+		self::dtdClassDoc($doc, $data);
+		$apiList[$r->getName()]=$data;
+		file_put_contents($cachePath, "<?php \r return ".var_export($apiList, true).";");
+	}
+	static function handlerComment($str) {
+		return join("\r", array_filter(array_map(function ($str) {
+			return trim(preg_replace("/\\/{0,1}\\*{1,}\\/{0,1}/S", "", trim($str)));
+		}, explode("\r", $str)), function ($str) {
+			return strlen($str) > 0;
+		}));
+	}
+	static function dtdClassDoc($comment, &$data) {
+		$lines = explode("\r", $comment);
+		$note = '';
+		$lines = array_map(function ($line) use (&$note, &$data) {
+			if (preg_match("/^@(.+) {1,}(.+)/S", $line, $matches)) {
+				$data[$matches[1]] = $matches[2];
+				return null;
+			} else {
+				return $line;
+			}
+		}, $lines);
+		$data['note'] = join("\r", array_filter($lines, function ($item) {
+			return $item != null;
+		}));
+	}
     protected function setAjaxHeader()
     {
         header("Access-Control-Allow-Headers:Origin,X-Requested-With,X_Requested_With,Content-Type,Accept,Access-Control-Request-Method,X_FILENAME");

@@ -76,5 +76,5 @@ composer.cmd install # windows CMD
 * [Smarty 中文文档][2]
 
 [1]:http://www.phpcomposer.com/ (Composer 中文)
-[2]:http://www.smarty.net/docs/zh_CN/(Smarty 中文文档)
+[2]:http://www.smarty.net/docs/zh_CN/ (Smarty 中文文档)
 [11]:http://www.scrapbook.cash/ (缓存处理)

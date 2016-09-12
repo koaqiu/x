@@ -48,7 +48,10 @@ class DateTime
     function __construct($time = 'now', DateTimeZone $timezone = null)
     {
         if(is_string($time)) {
-            $this->_datetime = new \DateTime($time, $timezone);
+	        $this->_datetime = new \DateTime($time, $timezone);
+        }elseif($time instanceof DateTime){
+        	$this->_datetime = new \DateTime();
+	        $this->_datetime->setTimestamp($time->_datetime->getTimestamp());
         }else {
             $this->_datetime = new \DateTime();
             if(is_numeric($time)) {

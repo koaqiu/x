@@ -70,7 +70,9 @@ class ArrayUtil {
 	 * @param       $handler
 	 * @return mixed
 	 */
-	public static function first(array $arr, $handler) {
+	public static function first($arr, $handler) {
+		if($arr == null || !is_array($arr))
+			return false;
 		$tmp = array_filter($arr, $handler);
 		$tmp = array_reverse($tmp);
 		return array_pop($tmp);
@@ -82,7 +84,9 @@ class ArrayUtil {
 	 * @param       $handler
 	 * @return mixed
 	 */
-	public static function last(array $arr, $handler) {
+	public static function last($arr, $handler) {
+		if($arr == null || !is_array($arr))
+			return false;
 		$tmp = array_filter($arr, $handler);
 		return array_pop($tmp);
 	}

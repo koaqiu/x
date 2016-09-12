@@ -17,21 +17,46 @@ use x\Utils\Data;
  */
 abstract class BaseApi extends BaseHandler
 {
+	/**
+	 * TOKEN无效
+	 */
+	const ERROR_TOKEN_INVALID = 4001;
+	/**
+	 * 用户无效（需要用户权限且用户无效时会抛出）
+	 */
+	const ERROR_USER_INVALID = 401;
+	/**
+	 * 无权限（需要用户权限且用户无有效权限时会抛出）
+	 */
+	const ERROR_USER_FORBIDDEN = 403;
+
     /**
      * 返回API完整名称
      * @return string
      */
     abstract function getAction();
 
+	/**
+	 * 返回数据结构
+	 * @return string
+	 */
+	abstract function getResultType();
+
+	/**
+	 * 请求的数据结构
+	 * @return string
+	 */
+	abstract function getRequestType();
+
     /**
      * 执行API
      * @return Result
      */
     abstract function execute();
-    function __construct(){
+    function __construct($dtd = false){
+    	if($dtd)return;
         Handler::Register($this);
     }
-
     /**
      * 获取API参数
      * @return Data

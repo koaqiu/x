@@ -8,7 +8,11 @@
 
 namespace x\Utils;
 
-
+/**
+ * 封装一些数组操作
+ * Class xArray
+ * @package x\Utils
+ */
 class xArray {
 	private $array_data;
 	/**
