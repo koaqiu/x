@@ -34,7 +34,8 @@ class BaseController extends BaseHandler
         $this->_smarty->setCacheDir($config["cache"]);
         $this->action = $routePath[0];
 	    $this->pageInit();
-        $this->$routePath[0]();
+        $func = $this->action;
+	    $this->$func();
     }
     protected function pageInit(){}
     protected function assign($tpl_var, $value = null, $nocache = false){
