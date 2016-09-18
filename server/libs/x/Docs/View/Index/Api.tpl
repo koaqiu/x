@@ -8,6 +8,7 @@
     <title>API 文档 -- {$title}</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css" crossorigin="anonymous">
+    <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <style type="text/css">
         html,body{
             font-size: 12pt;
@@ -25,6 +26,29 @@
             border-top: 3px solid #222;
             padding: .5rem 0;
         }
+        .fa.fa-hidden {
+            visibility: hidden;
+        }
+        table.tg { }
+        table.tg th.nowrap, table.tg td.nowrap {
+            white-space: nowrap;
+        }
+        table.tg tr > th {
+            background: #dedede;
+            text-shadow: #FFF 1px 1px 1px;
+            color: #333;
+            border-bottom: #9d9d9d 1px solid !important;
+            border-top: #eee 1px solid !important;
+            border-right: #9d9d9d 1px solid !important;
+        }
+        table.tg tr > td:first-child {
+            background: #ddd;
+            border-right: #ABABAB 1px solid !important;
+            border-bottom: #DDDDDD 1px solid !important;
+            color: #777;
+            text-shadow: #FFF 1px 1px 1px;
+        }
+
         .list-group .table {
             margin-bottom: 0;
         }
@@ -36,6 +60,10 @@
         }
         .list-group .table td,.list-group .table th{
             min-width: 6rem;
+            padding: 5px;
+        }
+        .list-group .table td.num,.list-group .table th.num{
+            max-width: 1.3rem;text-align: center;
         }
         .list-group .table tbody td{
             vertical-align: middle;
@@ -76,25 +104,6 @@
                         <p>{$item["note"]}</p>
                     </a>
                 {/foreach}
-                {*<a href="#" data-api="Core.GetToken" class="list-group-item api-item">*}
-                    {*<h4>Core.GetToken</h4>*}
-                    {*<p>获取Token</p>*}
-                {*</a>*}
-                {*<a href="#/Docs/Api/Core.Docs" data-api="Core.Docs" class="list-group-item api-item">*}
-                    {*<h4 class="list-group-item-heading">Core.Docs</h4>*}
-                    {*<p class="list-group-item-text">获取文档信息</p></a>*}
-                {*<a href="#" data-api="Statistics.Goods.View" class="list-group-item api-item">*}
-                    {*<h4>Statistics.Goods.View</h4>*}
-                {*</a>*}
-                {*<a href="#" data-api="Statistics.Scene.Data" class="list-group-item api-item">*}
-                    {*<h4>Statistics.Scene.Data</h4>*}
-                {*</a>*}
-                {*<a href="#" data-api="Statistics.Scene.View" class="list-group-item api-item">*}
-                    {*<h4>Statistics.Scene.View</h4>*}
-                {*</a>*}
-                {*<a href="#" data-api="Statistics.User.Income" class="list-group-item api-item">*}
-                    {*<h4>Statistics.User.Income</h4>*}
-                {*</a>*}
             </div>
         </div>
         <div class="col-sm-8">
@@ -118,16 +127,17 @@
                     </tbody>
                 </table>
                 <div class="list-group-item heading">返回值</div>
-                <table class="table table-bordered">
+                <table class="table table-bordered tg">
                     <thead class="thead-inverse">
                     <tr>
-                        <th>名称</th>
+                        <th class="num"></th>
+                        <th class="nowrap">名称</th>
                         <th>类型</th>
                         <th>默认值</th>
                         <th>说明</th>
                     </tr>
                     </thead>
-                    <tbody id="result-list"><tr><td colspan="4">无</td></tr></tbody>
+                    <tbody id="result-list"><tr><td class="num"></td><td colspan="4">无</td></tr></tbody>
                 </table>
                 <div class="list-group-item heading">错误代码</div>
                 <table class="table table-bordered">
@@ -193,7 +203,7 @@
                 });
             }
         })
-
+        var line = 1;
         function showRequest(data) {
             var tbody = $('tbody#request-list').empty();
             if(data == null || data.properties == null || data.properties.length < 1){
@@ -220,25 +230,49 @@
                 tbody.append(tr);
             }
         }
+        function showResultLine(tbody, p, level) {
+            var tr = $('<tr></tr>');
+            var isFolder = !(!p.properties);
+            tr.append('<td class="num">'+line+'</td>');
+            line++;
+            var tdFirst = $('<td class="nowrap"></td>');
+            for(var i = 0; i < level; i++) {
+                tdFirst.append('<i class="fa fa-hidden fa-folder-open"></i>');
+            }
+            if(isFolder) {
+                tdFirst.append('<a href="javascript:;"><i class="fa fa-caret-down fcaret"></i> <i class="fa fa-folder-open-o icon"></i></a>');
+                tdFirst.append(" "+p['name']);
+            }else {
+                tdFirst.append('<i class="fa fa-hidden fa-folder-open"></i>');
+                tdFirst.append("<i class='fa fa-file-o icon'></i> " + p['name'] + "");
+            }
+            tr.append(tdFirst);
+            tr.append("<td><code>"+p['type']+"</code></td>");
+            if(p['defaultValue']) {
+                tr.append("<td>" + p['defaultValue'] + "</td>");
+            }else{
+                tr.append('<td>-</td>');
+            }
+            tr.append("<td>"+p['note']+"</td>");
+            tbody.append(tr);
+            if(isFolder){
+                for(var i = 0; i < p.properties.length ;i++){
+                    var item = p.properties[i];
+                    showResultLine(tbody, item, level + 1);
+                }
+            }
+        }
+
         function showResult(data) {
+            line = 1;
             var tbody = $('tbody#result-list').empty();
             if(data == null || data.properties == null || data.properties.length < 1){
-                tbody.append('<tr><td colspan="4">无</td></tr>');
+                tbody.append('<tr><td class="num"></td><td colspan="4">无</td></tr>');
                 return;
             }
-
-            for(var i=0;i<data.properties.length ;i++){
+            for(var i = 0;i<data.properties.length; i++){
                 var p = data.properties[i];
-                var tr = $('<tr></tr>');
-                tr.append("<td>"+p['name']+"</td>");
-                tr.append("<td><code>"+p['type']+"</code></td>");
-                if(p['defaultValue']) {
-                    tr.append("<td>" + p['defaultValue'] + "</td>");
-                }else{
-                    tr.append('<td>-</td>');
-                }
-                tr.append("<td>"+p['note']+"</td>");
-                tbody.append(tr);
+                showResultLine(tbody, p, 0);
             }
         }
         function showErrorCode(list) {
