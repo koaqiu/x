@@ -49,6 +49,7 @@ class Dbase
             $dbConfig["dbName"],
             $dbConfig["port"]
         );
+	    $this->_db->set_charset("utf8");
     }
 
     public static function get(array $dbConfig = null){
