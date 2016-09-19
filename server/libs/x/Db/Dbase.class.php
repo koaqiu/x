@@ -121,7 +121,7 @@ class Dbase
         $q = $this->_db->query($sql);
         if($q) {
             try {
-                $result = $q->fetch_row();
+                $result = $q->fetch_assoc();
             } catch (\ErrorException $exception) {
             }
             $q->close();
