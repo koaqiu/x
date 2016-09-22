@@ -125,14 +125,15 @@ class Handler extends BaseHandler
 
     protected function out(Result $data = null)
     {
+    	$config = App::getConfig();
         $cb = $this->getOne(array('callback', '__cb'));
         if ($cb) {
             if ($data)
                 $data->callback = $cb;
-            header('Content-Type:application/json; charset=utf-8');
+            header('Content-Type:application/json; charset='.$config["charset"]);
             exit($cb . '(' . json_encode($data, JSON_NUMERIC_CHECK) . ');');
         } else {
-            header('Content-Type:application/json; charset=utf-8');
+            header('Content-Type:application/json; charset='.$config["charset"]);
             exit(json_encode($data, JSON_NUMERIC_CHECK));
         }
     }

@@ -31,7 +31,7 @@ class App
 
         $config = self::getConfig();
         $this->run($moduleName);
-
+	    header("Content-type:text/html;charset=".$config["charset"]);
 //        $smarty = new Smarty();
 //
 //        $smarty->setTemplateDir(APP_TEMP_PATH.'app'.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR);

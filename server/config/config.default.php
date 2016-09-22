@@ -10,6 +10,7 @@ return array(
     "appTitle" => 'x 框架',
     "appVer" => '0.1',
     "debug" => true,
+	"charset" => "utf-8",
     "router" => array(
         /**
          * 模式：1-phpinfo
