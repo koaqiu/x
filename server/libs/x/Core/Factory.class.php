@@ -7,6 +7,7 @@
  */
 
 namespace x\Core;
+
 use x\Core\Secure\IMemberShip;
 use x\Core\Secure\MemberShip;
 
@@ -24,8 +25,9 @@ class Factory {
 	 * @return null
 	 */
 	public static function getFacotry($className, array $check_implements = null) {
-		if(empty($className))
+		if (empty($className)) {
 			return null;
+		}
 		if (array_key_exists($className, self::$_facotries)) {
 			return self::$_facotries[$className];
 		}
@@ -34,10 +36,11 @@ class Factory {
 			$implements = class_implements($className);
 			if (array_intersect($implements, $check_implements)) {
 				// do not things
+			} else {
+				return null;
 			}
-			return null;
 		}
-		$factory =  new $className;
+		$factory = new $className;
 		self::$_facotries[$className] = $factory;
 		return $factory;
 	}
@@ -46,12 +49,13 @@ class Factory {
 	 * @param $config
 	 * @return IMemberShip
 	 */
-	public static function getMemberShip($config){
+	public static function getMemberShip($config) {
 		$handler = $config['memberShip'];
 		$factory = Factory::getFacotry($handler, array('x\Core\Secure\IMemberShip'));
-		if($factory)
+		if ($factory) {
 			return $factory;
-		else
+		} else {
 			return new MemberShip();
+		}
 	}
 }
