@@ -9,6 +9,7 @@
 namespace x;
 use Smarty;
 use x\Utils\ArrayUtil;
+use x\Utils\xString;
 const VERSION = '0.1';
 
 class App
@@ -31,22 +32,19 @@ class App
 
         $config = self::getConfig();
         $this->run($moduleName);
+
+	    $url = $_SERVER['PHP_SELF'];
+	    $arr = preg_split("/\\./",$url);
+	    $extend = array_pop($arr);
+	    if(strpos($extend,"/") === false){
+		    header("HTTP/1.1 404 Not Found");
+		    header("Status: 404 Not Found");
+		    echo "404";
+		    exit;
+	    }
 	    header("Content-type:text/html;charset=".$config["charset"]);
-//        $smarty = new Smarty();
-//
-//        $smarty->setTemplateDir(APP_TEMP_PATH.'app'.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR);
-//        $smarty->setCompileDir(APP_TEMP_PATH.'app'.DIRECTORY_SEPARATOR.'templates_c'.DIRECTORY_SEPARATOR);
-//        $smarty->setConfigDir(APP_TEMP_PATH.'app'.DIRECTORY_SEPARATOR.'configs'.DIRECTORY_SEPARATOR);
-//        $smarty->setCacheDir(APP_TEMP_PATH.'app'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR);
-//
-//        $smarty->assign('title', $config['appTitle']);
-//        $smarty->assign('version', "x(".VERSION.")");
-//
-//        $smarty->display('index.tpl');
         print_r($config['appTitle']."\n");
         print_r("x(".VERSION.")");
-
-        //var_dump($config);
     }
 
     protected function run($moduleName = null){
