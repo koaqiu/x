@@ -57,14 +57,7 @@ class DefaultChecker implements IPermission {
 		if(!is_array($controllerConfig) || count($controllerConfig) == 0)
 			return false;
 
-		if(!isset($controllerConfig[$action]))
-			return false;
-
-		$actionConfig = $controllerConfig[$action];
-		if($actionConfig === "*")
-			return true;
-		if(!is_array($actionConfig) || count($actionConfig) == 0)
-			return false;
+		return array_search($action, $controllerConfig) >= 0;
 	}
 	/**
 	 * 检查当前用户的权限，有权限返回true，否则返回false
