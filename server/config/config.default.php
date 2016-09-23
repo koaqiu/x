@@ -38,5 +38,29 @@ return array(
     "api"=>array(
         "secure"=>"TOKEN",//安全性：使用 token（默认），false 不进行验证
     ),
+	"secure" => array(
+		"enabled" => true,
+		"handler" => "x\\Core\\Secure\\DefaultChecker",//权限检查处理程序，必须实现 x\Core\Secure\IPermission
+		//白名单
+		"white_list" => array(
+			"Docs" => "*", //Docs 模块
+			"Test" => array(
+				"Index" => "*",//Test 模块的 Index 控制器
+				"User" => array(
+					"Login",//Test 模块的 User 控制器的 Login 动作
+				)
+			),
+		),
+		"memberShip" => "", //用户管理，必须实现 x\Core\Secure\IMemberShip
+		"error_url" => "", //没有权限时的跳转页面
+		"db" => array(
+			"host" => "localhost",
+			"port" => 3306,
+			"user" => "root",
+			"pass" => "",
+			"dbName" => "x",
+			"prefix"=> "x_",//表名前缀
+		),
+	),
 	"ShowDocs"=>true,
 );

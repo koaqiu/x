@@ -29,18 +29,17 @@ class App
             echo "入口文件没有定义常量，请参考文档检查入口文件";
             return;
         }
-
+		session_start();
         $config = self::getConfig();
         $this->run($moduleName);
 
 	    $url = $_SERVER['PHP_SELF'];
-	    $arr = preg_split("/\\./",$url);
-	    $extend = array_pop($arr);
-	    if(strpos($extend,"/") === false){
-		    header("HTTP/1.1 404 Not Found");
-		    header("Status: 404 Not Found");
-		    echo "404";
-		    exit;
+	    $arr = xString::Split($url, ".");
+	    if($arr) {
+		    $extend = array_pop($arr);
+		    if (strpos($extend, "/") === false) {
+		    	return BaseHandler::notFound();
+		    }
 	    }
 	    header("Content-type:text/html;charset=".$config["charset"]);
         print_r($config['appTitle']."\n");

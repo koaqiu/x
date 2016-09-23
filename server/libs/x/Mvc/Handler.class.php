@@ -11,14 +11,10 @@ namespace x\Mvc;
 
 use x\App;
 use x\BaseHandler;
+use x\Core\Factory;
 
 class Handler extends BaseHandler {
 	function __construct($moduleName, array $routePath) {
-//        $configPath = APP_SRC.$moduleName.DIRECTORY_SEPARATOR."config.php";
-//        if(!file_exists_case($configPath)){
-//            return;
-//        }
-//        define("APP_MODULE", $moduleName);
 		$configPath = false;
 		$appConfig = App::getConfig();
 		if(strcasecmp($moduleName, "Docs") != 0 || $appConfig["ShowDocs"] === true){
@@ -52,13 +48,38 @@ class Handler extends BaseHandler {
 		array_splice($routePath, 0, 1);
 		$inc = $this->findController($controller);
 		if (is_subclass_of($inc, "x\\Mvc\\BaseController")) {
+			$this->checkPermission($moduleName, $controller, $routePath[0], $config);
 			$inc->_init($routePath, $config);
 			return;
 		}
 		var_dump($config);
 		die(0);
 	}
+	protected function checkPermission($moduleName, $controller, $action, $moduleConfig){
+		$appConfig = App::getConfig();
+		$secure = $appConfig['secure'];
+		if($secure['enabled']){
+			$handler = $secure['handler'];
+			$factory = Factory::getFacotry($handler, array('x\Core\Secure\IPermission'));
+			if($factory){
+				if($factory->check($moduleName, $controller, $action))
+					return true;
+			}
+		}else{
+			return true;
+		}
+		$error_url = $secure['error_url'];
+		if(empty($error_url)){
+			if(isset($moduleConfig['error']) && isset($moduleConfig['error']['403'])){
+				$error_url = $moduleConfig['error']['403'];
+			}
+		}
+		if($error_url){
+			return self::redirect($error_url, 403);
+		}
 
+		return self::noPermission();
+	}
 	protected function getModuleConfig($moduleName, $basePath) {
 		$configPath = $basePath . $moduleName . DIRECTORY_SEPARATOR . "config.php";
 		if (file_exists_case($configPath)) {

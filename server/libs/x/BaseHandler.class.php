@@ -95,6 +95,30 @@ class BaseHandler
             return $dv;
     }
 
+    public static function notFound(){
+	    header("HTTP/1.1 404 Not Found");
+	    header("Status: 404 Not Found");
+	    echo "404";
+	    exit(404);
+	    return false;
+    }
+	public static function noPermission(){
+	    header("HTTP/1.1 403 Not Permission");
+	    header("Status: 403 Not Permission");
+	    echo '403 Not Permission';
+	    exit(403);
+	    return false;
+    }
+	public static function redirect($url, $exit_code = 0, $timeout = 0){
+    	if($timeout > 0){
+    		echo '<html><head><meta http-equiv="refresh" content="'.$timeout.';url'.$url.'"></head><body>redirect : '.$url.'</body></html>';
+	    }else {
+		    header("HTTP/1.1 303 See Other");
+		    header("Location: $url");
+	    }
+	    exit($exit_code);
+	    return false;
+    }
     /**
      * 判断是否Ajax请求
      * @return bool
