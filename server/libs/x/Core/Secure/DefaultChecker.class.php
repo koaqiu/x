@@ -13,6 +13,10 @@ use x\App;
 use x\Core\Factory;
 use x\Db\Dbase;
 
+/**
+ * 默认的权限检查器
+ * @package x\Core\Secure
+ */
 class DefaultChecker implements IPermission {
 	private $appConfig;
 	private $config;
@@ -23,7 +27,10 @@ class DefaultChecker implements IPermission {
 		$this->db = Dbase::get($this->config["db"]);
 	}
 
-
+	/**
+	 * 获取当前用户ID
+	 * @return int
+	 */
 	protected function getUserId(){
 		$memberShip = Factory::getMemberShip($this->config);
 		if($memberShip){
@@ -31,9 +38,22 @@ class DefaultChecker implements IPermission {
 		}
 		return 0;
 	}
+
+	/**
+	 * 白名单
+	 * @var array
+	 */
 	private static $MODULE_WHITE_LIST = array(
 		'Docs'
 	);
+
+	/**
+	 * 从配置文件中获取白名单并检查
+	 * @param $module
+	 * @param $controller
+	 * @param $action
+	 * @return bool
+	 */
 	protected function checkWhiteList($module, $controller, $action){
 		$white_list = $this->config['white_list'];
 		if(count($white_list) == 0)
@@ -119,6 +139,12 @@ class DefaultChecker implements IPermission {
 
 		return false;
 	}
+
+	/**
+	 * 获取用户的权限列表
+	 * @param $uid
+	 * @return array
+	 */
 	protected function getMyPermission($uid){
 		$roleQuery = $this->db->createSqlBuilder('role_user')
 			->where(array(
