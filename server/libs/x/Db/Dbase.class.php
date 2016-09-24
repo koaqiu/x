@@ -27,15 +27,12 @@ use x\Utils\xString;
 
 class Dbase
 {
-    private static $_inc;
+    private static $_inc = array();
     private $_db;
     private $_table_prefix = '';
     private $_lastSql = false;
     private function __construct(array $dbConfig = null)
     {
-        if (!$dbConfig) {
-            $dbConfig = App::getConfig()['db'];
-        }
         if(isset($dbConfig["prefix"])){
             $this->setTable($dbConfig["prefix"]);
         }
@@ -53,10 +50,15 @@ class Dbase
     }
 
     public static function get(array $dbConfig = null){
-        if(!self::$_inc){
-            self::$_inc = new Dbase($dbConfig);
+	    if ($dbConfig == null) {
+		    $dbConfig = App::getConfig()['db'];
+	    }
+	    $key = md5(json_encode($dbConfig));
+
+        if(!array_key_exists($key, self::$_inc)){
+            self::$_inc[$key] = new Dbase($dbConfig);
         }
-        return self::$_inc;
+        return self::$_inc[$key];
     }
     public function countSqlBuilder($tableName){
         return SqlBuilder::Count($this, $tableName);
