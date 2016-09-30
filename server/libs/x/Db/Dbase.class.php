@@ -61,7 +61,10 @@ class Dbase
         return self::$_inc[$key];
     }
     public function countSqlBuilder($tableName){
-        return SqlBuilder::Count($this, $tableName);
+    	$builder = SqlBuilder::Select($this, $tableName);
+	    $builder->fields("COUNT(*)");
+	    $builder->lockField();
+        return $builder;
     }
     public function createSqlBuilder($tableName, $action = SqlBuilder::ACTION_SELECT, $tablePrefix = false){
         $tableName = $this->getTableName($tableName, $tablePrefix);
@@ -142,7 +145,10 @@ class Dbase
         if($prefix && !empty($prefix))
             $this->_table_prefix = $prefix;
     }
-    public function EscapeString($str){
+    public function EscapeString($str, $addQuotation = false){
+        if($addQuotation && strpos($str, "`") === false) {
+	        return "`" . $this->_db->real_escape_string($str) . "`";
+        }
         return $this->_db->real_escape_string($str);
     }
 
