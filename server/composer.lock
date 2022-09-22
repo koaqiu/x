@@ -1,10 +1,9 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "df6224a79e2146f5ee5095356c040889",
     "content-hash": "93ed69f37f20e1416ed8620df71f70c7",
     "packages": [
         {
@@ -88,7 +87,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2016-08-10 08:55:11"
+            "time": "2016-08-10T08:55:11+00:00"
         },
         {
             "name": "matthiasmullie/scrapbook",
@@ -173,7 +172,7 @@
                 "transactional",
                 "value"
             ],
-            "time": "2016-05-09 18:41:33"
+            "time": "2016-05-09T18:41:33+00:00"
         },
         {
             "name": "psr/cache",
@@ -219,24 +218,28 @@
                 "psr",
                 "psr-6"
             ],
-            "time": "2016-08-06 20:24:11"
+            "time": "2016-08-06T20:24:11+00:00"
         },
         {
             "name": "smarty/smarty",
-            "version": "v3.1.30",
+            "version": "v3.1.47",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smarty-php/smarty.git",
-                "reference": "ed2b7f1146cfda13df1eea8a5f707a1b771b6e7e"
+                "reference": "a09364fe1706cb465e910eb040e592053d7effb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/smarty-php/smarty/ed2b7f1146cfda13df1eea8a5f707a1b771b6e7e.zip",
-                "reference": "ed2b7f1146cfda13df1eea8a5f707a1b771b6e7e",
+                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/a09364fe1706cb465e910eb040e592053d7effb8",
+                "reference": "a09364fe1706cb465e910eb040e592053d7effb8",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2"
+                "php": "^5.2 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.5 || ^6.5 || ^5.7 || ^4.8",
+                "smarty/smarty-lexer": "^3.1"
             },
             "type": "library",
             "extra": {
@@ -246,9 +249,7 @@
             },
             "autoload": {
                 "classmap": [
-                    "libs/Smarty.class.php",
-                    "libs/SmartyBC.class.php",
-                    "libs/sysplugins/"
+                    "libs/"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -274,7 +275,13 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-08-07 18:46:49"
+            "support": {
+                "forum": "http://www.smarty.net/forums/",
+                "irc": "irc://irc.freenode.org/smarty",
+                "issues": "https://github.com/smarty-php/smarty/issues",
+                "source": "https://github.com/smarty-php/smarty/tree/v3.1.47"
+            },
+            "time": "2022-09-14T11:29:00+00:00"
         }
     ],
     "packages-dev": [],
@@ -284,5 +291,6 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
 }
